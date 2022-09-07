@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<parameters>
+    <component name="pili">
+        <param name="ks" required="true">
+            <default units="pN/(\mu m)^2">10000</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:010.2f}</form>
+            <description>Elastic constant of a pilus.</description>
+            <note>
+                Value can be estimated from the persistence length of a semiflexible rod.
+                Currently an order of magnitude estimate.
+            </note>
+        </param>
+        <param name="force_threshold" required="False">
+            <default units="pN">5.</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>
+                For forces below the threshold we will consider them zero
+                for the purpose of pili release.
+            </description>
+            <note>Not having this parameter would allow release rate to dependend on
+                the integrator force target.
+            </note>
+        </param>
+        <param name="d_free" required="true">
+            <default units="\mu m">0.004</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>Elementary length step of a free pilus.</description>
+            <note>Value of 0.004 corresponds to 3 pilin monomers</note>
+        </param>
+        <param name="d_bound" required="true">
+            <default units="\mu m">0.004</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>Elementary length step of a bound pilus.</description>
+            <note>Value of 0.004 corresponds to 3 pilin monomers</note>
+        </param>
+        <param name="force_min_length" required="false">
+            <default units="\mu m">0.</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>Length offset in pili elastic force equation.</description>
+        </param>
+        <param name="kb_sh" required="true">
+            <default units="s^-1">125</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Rate of bound pili retraction steps.</description>
+            <note>Corresponds to 0.5\mu m s^-1 for d_bound=0.004 .</note>
+        </param>
+        <param name="anchor_angle_threshold" >
+            <default >1.5707963267948966</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>threshold angle in radians where retraction rate of bound pili may be reduced</description>
+            <note>default is pi/2</note>
+        </param>
+        <param name="anchor_angle_smoothing_fraction" >
+            <default >0</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>Fraction of the angles between anchor_angle_threshold and pi/2 on which retraction rate is smoothed to zero</description>
+            <note>fraction of 0 means that anchor_angle_threshold is a hard limit</note>
+        </param>
+        <param name="kb_ex" required="true">
+            <default units="s^-1">125</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Rate of bound pili extension steps.</description>
+            <note>Corresponds to 0.5\mu m s^-1 for d_bound=0.004 .</note>
+        </param>
+        <param name="kf_sh" required="true">
+            <default units="s^-1">125</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Rate of free pili retraction steps.</description>
+            <note>Corresponds to 0.5\mu m s^-1 for d_free=0.004 .</note>
+        </param>
+        <param name="kf_ex" required="true">
+            <default units="s^-1">125</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Rate of free pili extension steps.</description>
+            <note>Corresponds to 0.5\mu m s^-1 for d_free=0.004 .</note>
+        </param>
+        <param name="f_release" required="true">
+            <default units="pN">100</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Factor in exponential form of pilus release rate.</description>
+        </param>
+        <param name="dwell_time" required="true">
+            <default units="s">1.0</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>Time scale of pilus dwelling on the surface.</description>
+            <note>Tala et al. 2019 observes 997ms for fliC^- and 2315ms for 
+                wildtype</note>
+        </param>
+        <param name="k_ret_off" required="true">
+            <default units="s^-1">0.110</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Unbinding rate of retraction motor</description>
+        </param>
+        <param name="k_ext_off" required="true">
+            <default units="s^-1">0.625</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Unbinding rate of extension motor</description>
+        </param>
+        <param name="k_ret_on" required="true">
+            <default units="s^-1">2.50</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Binding rate of retraction motor</description>
+        </param>
+        <param name="k_ext_on" required="true">
+            <default units="s^-1">0.417</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Binding rate of extension motor</description>
+        </param>
+        <param name="f_stall" required="true">
+            <default units="pN">100</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Factor in exponential form of pilus switching rate.</description>
+            <note>Pili should tend to switch to the extension mode at high forces.</note>
+        </param>
+        <param name="detach_grace_length">
+        	<default units="\mu m">0.000</default>
+        	<class>Pili</class>
+        	<dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>Subtract this distance from pili before checking detachment is possible. Value i.e. 0.04</description>
+            <note>We now couple detachment with a single shrink() so set grace length to 0.</note>
+        </param>
+        <param name="detach_grace_time">
+        	<default units="s">0.000</default>
+        	<class>Pili</class>
+        	<dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>After sucessful detachment prevent reattaching to the surface for this time.</description>
+            <note>set detach_grace_time > detach_grace_distance/retraction_velocity</note>
+        </param>
+        <param name="tau_e" required="false">
+            <default units="s">0.05</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Time scale of a bound pilus extension event.</description>
+            <note>
+                Parameter given by very approximately by Clausen.
+            </note>
+        </param>
+        <param name="free_tau_e" required="true">
+            <default units="s">2.</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Time scale of a free pilus extension event.</description>
+            <note>
+                Important parameter which sets the typical length of free pili.
+                The time scale for an extension is set relative to this value
+                according the ratio reported by Clausen.
+            </note>
+        </param>
+        <param name="k_adh" required="true">
+            <default units="s^-1">5</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Rate of attachment to surface. In 3D rate of checking for attachment.</description>
+            <note>The value and interpretation of this parameter is very different in 2D and 3D.</note>
+        </param>
+        <param name="adh_accept" required="false">
+            <default units="">1</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>Multiplied by k_adh to obtain the rate of attach checks in 3d.</description>
+            <note>Needed to separate the attach checking frequency from the attach rate.</note>
+        </param>
+        <param name="k_dissolve">
+            <default units="s^-1">0.0</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.5f}</form>
+            <description>Rate of dissolving pili</description>
+            <note>Note that pili dissolve immediately after retracting into the cell body</note>
+        </param>
+        <param name="k_resample">
+            <default units="s^-1">1.0</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.5f}</form>
+            <description>Rate of resampling WLC piil</description>
+        </param>
+        <switch name="force_max_length">
+            <default>True</default>
+            <class>Pili</class>
+            <description>Enforce a maximum pili length</description>
+        </switch>
+        <param name="max_length" required="false">
+            <default units="\mu m">19.9</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>
+                In some cases pili can grow indefinitely. 
+                This parameter is used to enforce a max length.
+            </description>
+        </param>
+        <param name="low_force_proportion" required="false">
+            <default units="">0.031</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>
+                The proportion of time pili are elongating when under tension f ~ 8pN.
+            </description>
+        </param>
+        <param name="high_force_proportion" required="false">
+            <default units="">0.3</default>
+            <class>pili</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>
+                The proportion of time pili are elongating when at f ~ f_stall.
+            </description>
+        </param>
+        <param name="free_tau_eovers" required="false">
+            <default units="s^-1">1.</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>
+                Override the high force (Clausen) switching dynamics and set
+                the ratio of elongation and shrinking timescales.
+            </description>
+        </param>
+        <switch name="allow_bound_ext_motor" required="false">
+            <default>True</default>
+            <class>Pili</class>
+            <description>
+                Setting to False prohibits bound pili from having extension motor.
+            </description>
+            <note>
+                Bound pili retract much more often than extend (Clausen, Tala).
+            </note>
+        </switch>
+        <switch name="allow_bound_extension" required="false">
+            <default>True</default>
+            <class>Pili</class>
+            <description>
+            	We cannot choose the extend action for bound and not taut pilus, even if extension motor is bound.
+            </description>
+        </switch>
+        <switch name="force_bound_retraction" required="false">
+            <default>False</default>
+            <class>Pili</class>
+            <description>
+            	Bound pili must have the retraction motor, cannot unbind this motor.
+            </description>
+        </switch>
+        <switch name="force_detachment" required="false">
+            <default>True</default>
+            <class>Pili</class>
+            <description>
+            	Pili must detach when their detachment random process is chosen. 
+                Shorten the pilus until it is detached if necessary.
+            </description>
+        </switch>
+        <param name='a'>
+            <default units='\mu m'>1.</default>
+            <form>{:06.3f}</form>
+            <description>Segment length of worm like chain pili</description>
+        </param>
+        <param name='Lp'>
+            <default units='\mu m'>5.</default>
+            <form>{:06.3f}</form>
+            <description>Persistence length of worm like chain</description>
+        </param>
+        <param name="rcondition" required="false">
+            <default>1</default>
+            <class>Pili</class>
+            <form>{:02d}</form>
+            <dtype>int</dtype>
+            <description>Available values (1,2) 
+                1 ->  Pili retraction triggered on binding to surface
+                2 ->  Pili retraction triggered on being bound, taut and retracting
+            </description>
+        </param>
+        <switch name="enforce_stalling" required="false">
+            <default>True</default>
+            <class>Pili</class>
+            <description>
+                If force on pili is greater than stall force, 
+                prevent retraction but still update time.
+            </description>
+        </switch>
+        <switch name="simplify_free_pili_etor" required="false">
+            <default>False</default>
+            <class>Pili</class>
+            <depends>free_sh_to_elong_rate</depends>
+            <description>
+                It's likely that extension ratio cannot be extrapolated from Clausen
+                at forces \langle 8pN. In that case it needs to be set independently.
+            </description>
+        </switch>
+    </component>
+    <component name="cell">
+        <param name="pili_generator" >
+            <default>kpgen</default>
+            <class>cell</class>
+            <dtype>str</dtype>
+            <description>The method for drawing boltzmann weighted pili configurations</description>
+            <note>Values: 'sample', 'kpgen'</note>
+        </param>
+        <param name="inside_length" required="false">
+            <default units="\mu m">0.04</default>
+            <class>Pili</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>Pili anchor distance from cell surface.</description>
+            <note>Critical for numerical stability. Pili anchors must not intersect the surface.</note>
+        </param>
+        <param name="maxpl" required="false">
+            <default units="\mu m">3</default>
+            <class>ACell</class>
+            <dtype>float</dtype>
+            <form>{:08.3f}</form>
+            <description>The max length of initialised pili if running_start is True</description>
+            <note>Not much reason to use this in 3d.</note>
+        </param>
+        <param name="min_length" required="false">
+            <default units="\mu m">0.020</default>
+            <class>ACell</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>disabled </description>
+        </param>
+
+        <switch name="pilus_replacement_on" required="false">
+            <default>False</default>
+            <class>ACell</class>
+            <description>When a pilus dissolves immediately spawn a new one.</description>
+        </switch>
+        <switch name="running_start" required="false">
+            <default>False</default>
+            <class>ACell</class>
+            <description>Allow pili to be initialised with finite length.</description>
+        </switch>
+        <param name="eps" required="false">
+            <default units="pN \mu m">100</default>
+            <class>Cell3d</class>
+            <dtype>float</dtype>
+            <form>{:010.4f}</form>
+            <description>Lennard Jones \epsilon for hard repulsion</description>
+        </param>
+        <param name="attract_width" required="false">
+            <default units="\mu m">0.01</default>
+            <class>Cell3d</class>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>Depth of the attractive potential well.</description>
+            <note>This parameter is important for walking/crawling modes and rough surfaces.</note>
+        </param>
+        <switch name="repulsive_only">
+            <default>False</default>
+            <class>Cell3d</class>
+            <description>Turn off attractive part of the surface potential.</description>
+        </switch>
+        <param name='distrib_type'>
+            <default>gaussian</default>
+            <class>Cell3d</class>
+            <dtype>str</dtype>
+            <description>Distribution type can be "uniform" or "guassian"</description>
+            <note>This will completely change the meaning of ACell.pilivar parameter</note>
+        </param>
+        <param name="polarisation" required="true">
+            <class>ACell</class>
+            <default>1.</default>
+            <dtype>float</dtype>
+            <form>{:03.1f}</form>
+            <description>
+                Pili can spawn only on one end (polarisation = 1.),
+                Pili spawn equally on both ends (polarisation = 0.)
+            </description>
+        </param>
+        <param name="pilivar" required="true">
+            <default units="\mu m(?)">0.785</default>
+            <class>ACell</class>
+            <dtype>float</dtype>
+            <form>{:010.5f}</form>
+            <symbol>$\kappa$</symbol>
+            <description>Width of the pili distribution.</description>
+            <note>If uniform distribution then pilivar is the threshold distance measured in the cell body</note>
+        </param>
+        <param name="k_spawn">
+            <default units="s^-1">0.0</default>
+            <class>ACell</class>
+            <dtype>float</dtype>
+            <form>{:08.5f}</form>
+            <description>Rate of spawning new pili</description>
+        </param>
+        <param name='spawn_extension_state'>
+            <default>1</default>
+            <class>ACell</class>
+            <dtype>int</dtype>
+            <form>{:d}</form>
+            <values>[0,1]</values>
+            <description>The binding state of the extension motor at pili spawn.</description>
+            <note>Value of 1 means that when pili spawn they are extending</note>
+        </param>
+        <param name="npili">
+            <default units="">0</default>
+            <dtype>int</dtype>
+            <form>{:02d}</form>
+            <description>Number of pili per cell.</description>
+        </param>
+        <param name="R">
+            <default units="\mu m">0.5</default>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>Cell body spherocylinder radius.</description>
+        </param>
+        <param name="length">
+            <default units="\mu m">2.</default>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>Cell body length.</description>
+            <note>Tip to tip length is this length + 2 * R</note>
+        </param>
+        <param name="initaxis">
+            <default>(1.,0.,0.)</default>
+            <dtype>eval</dtype>
+            <form>{}</form>
+            <description>The inital axis of the cell body.</description> 
+            <note>Convert to Vector3d or np.ndarray.</note>
+        </param>
+        <param name="initcenter">
+            <default>(0.,0.,0.5)</default>
+            <dtype>eval</dtype>
+            <form>{}</form>
+            <description>The inital position of the cell body center.</description>
+            <note>Convert to Vector3d or np.ndarray.</note>
+        </param>
+        <param name='pili_model'>
+            <default>wlc</default>
+            <dtype>str</dtype>
+            <form>{}</form>
+            <values>['wlc', 'rod']</values>
+            <description>Pili model</description>
+        </param>
+        
+    </component>
+    <component name="cg">
+        <param name="cg_maxsteps">
+            <default units="">20000</default>
+            <dtype>int</dtype>
+            <form>{:04d}</form>
+            <description>The number of steps after which the minimisation fails</description>
+        </param>
+        <param name="cg_force_target">
+            <default units="pN">4</default>
+            <description>Force at which we consider the system minimised</description>
+        </param>
+        <!--<param name="line_minimiser">-->
+    </component>
+    <component name="fire">
+        <param name="dt">
+            <default units="s">0.000005</default>
+            <description>timestep for FIRE energy minimisation</description>
+        </param>
+        <param name="dt_max">
+            <default units="s">0.00005</default>
+            <description>Maximum timestep for FIRE</description>
+        </param>
+        <param name="maxsteps">
+            <default units="">1000</default>
+            <dtype>int</dtype>
+            <form>{:04d}</form>
+            <description>The number of steps after which the minimisation fails</description>
+        </param>
+        <param name="force_target">
+            <default units="pN">5</default>
+            <description>Force at which we consider the system minimised</description>
+        </param>
+        <param name="f_inc">
+            <default>1.1</default>
+            <description>FIRE rate of increase of timestep</description>
+        </param>
+        <param name="f_dec">
+            <default>0.5</default>
+            <description>FIRE rate of decrease of timestep</description>
+        </param>
+        <param name="Nmin">
+            <default>5</default>
+            <dtype>int</dtype>
+            <form>{:02d}</form>
+            <description>Number of timesteps before accelerating timestep</description>
+        </param>
+        <param name="maxstep">
+            <default>1.</default>
+            <dtype>float</dtype>
+            <form>{:06.4f}</form>
+            <description>Maximum step distance in state vector space</description>
+            <note>Default is large enough that maxstep should be off. Appropriate value may be 0.001</note>
+        </param>
+
+    </component>
+    <component name="surface">
+        <param name="shape">
+            <default>plane</default>
+            <dtype>str</dtype>
+            <form>{}</form>
+            <description>Available surfaces: plane, infsteps, hexspheregrid, sineplane, none</description>
+        </param>
+        <param name="setup_style">
+            <default>None</default>
+            <dtype>str</dtype>
+            <form>{}</form>
+            <description>A keyword indicating where to initialise the cell on the surface.</description>
+        </param>
+        <param name="height">
+            <default>10.</default>
+            <dtype>float</dtype>
+            <form>{:07.3f}</form>
+            <description>Height of step surface.</description>
+        </param>
+        <!--Step-->
+        <param name="sep">
+            <default>10.</default>
+            <dtype>float</dtype>
+            <form>{:07.3f}</form>
+            <description>The separation distance between steps.</description>
+        </param>
+        <param name="smallr">
+            <default>0.25</default>
+            <dtype>float</dtype>
+            <form>{:06.3f}</form>
+            <description>Radius of small arcs.</description>
+        </param>
+        <!--hexsurface and sphere-->
+        <param name="sphere_radius">
+            <default>1.</default>
+            <dtype>float</dtype>
+            <form>{:09.3f}</form>
+            <description>For surfaces made of monodisperse spheres this is the radius.</description>
+        </param>
+        <!--SinePlane-->
+        <param name="B">
+            <default>1.</default>
+            <dtype>float</dtype>
+            <form>{:07.3f}</form>
+            <description>SinePlane B parameter</description>
+        </param>
+        <param name="A">
+            <default>1.</default>
+            <dtype>float</dtype>
+            <form>{:07.3f}</form>
+            <description>SinePlane A parameter</description>
+        </param>
+        <param name="nsign">
+            <default>1</default>
+            <dtype>int</dtype>
+            <form>{:02d}</form>
+            <description>SinePlane surface orientation (+1/-1)</description>
+        </param>
+        <switch name="initial_contact">
+            <default>True</default>
+            <description>Initialise the cell with atleast two surface contact points</description>
+        </switch>
+        <switch name="write_surface">
+            <default>True</default>
+            <description>Automatically attempt write a vtk file for the surface.</description>
+        </switch>
+    </component>
+    <component name="system">
+        <param name="seed">
+            <default>0</default>
+            <dtype>int</dtype>
+            <form>{}</form>
+            <description>Random seed initialises c++ random number generator</description>
+        </param>
+        <param name="dimension">
+            <default units="">3</default>
+            <dtype>int</dtype>
+            <description>The dimension of the simulation</description>
+        </param>
+        <param name="repeats">
+            <default units="">10</default>
+            <dtype>int</dtype>
+            <form>{:04d}</form>
+            <description>Number of identical Jobs to create for each choice of parameters</description>
+        </param>
+        <param name="simtime">
+            <default units="s">100</default>
+            <dtype>float</dtype>
+            <form>{:06f}</form>
+            <description>Simulate the bacterium for this number of seconds.</description>
+        </param>
+        <param name="n_attach_stop">
+            <default units="">-1</default>
+            <dtype>int</dtype>
+            <form>{:06d}</form>
+            <description>Simulate bacteria until this number of attachment events</description>
+            <note>Only for attachment loop, -1 value means no limit</note>
+        </param>
+        <param name="main">
+            <default units="">production</default>
+            <dtype>str</dtype>
+            <form>{:s}</form>
+            <values>['production', 'attachment']</values>
+            <description>Set which main loop to use for Jobs</description>
+        </param>
+        <param name="deltat">
+            <default units="s">0.1</default>
+            <dtype>float</dtype>
+            <description>frequency of collecting data</description>
+        </param>
+        <param name="vtkdeltat">
+            <default units="s">1.0</default>
+            <dtype>float</dtype>
+            <description>frequency of writing vtk output</description>
+        </param>
+        <param name="minstyle">
+            <default>myfire</default>
+            <dtype>str</dtype>
+            <form>{}</form>
+            <description>
+                The energy minimisation algorithm.
+                Available: ['myfire', 'pelefire']
+            </description>
+        </param>
+        <switch name="randominit">
+            <default>True</default>
+            <description>
+                If true automatically generate a new random seed on running a Job.
+            </description>
+        </switch>
+        <switch name="track">
+            <default>False</default>
+            <description>
+                For testing single cell simulations. Write on every step to trackxy.dat.
+            </description>
+        </switch>
+        <switch name="output_pilidata">
+            <default>False</default>
+            <description>
+                switch regular output of pili data on/off
+            </description>
+            <note>Pili output is the most data hungry and the least useful output</note>
+        </switch>
+        <switch name="vtkwrite">
+            <default units="">False</default>
+            <description>Turn off/on output of vtk geometry files</description>
+        </switch>
+        <switch name="debug">
+            <default units="">False</default>
+            <description>Turn off/on debug mode (whatever little of it is implemented)</description>
+        </switch>
+            
+    </component>
+</parameters>
