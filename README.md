@@ -26,3 +26,6 @@ tqdm
 tabulate  
 SALib  
 
+## Acknowledgements
+
+James Farrell, Jure Dobnikar
