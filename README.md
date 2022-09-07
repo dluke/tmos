@@ -6,7 +6,7 @@ Simulation tool for studying twitching motility of bacteria.
 
 Written by Daniel Barton   
 
-Requirements  
+## Requirements  
 
 ### C++ libraries  
 Python 3.8 (python3-dev package for Python.h)  
