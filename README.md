@@ -15,12 +15,11 @@ Eigen 3.3+
 Nlopt (linux: libnlopt-dev package)  
 VTK 7+ (optional)  
 
-### Analysis  
+### Python analysis  
 Numpy 1.9+  
 Scipy  
 Matplotlib  
 
-### analysis routines  
 pandas  
 seaborn  
 tqdm  
