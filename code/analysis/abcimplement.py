@@ -1,6 +1,7 @@
 
-import warnings
+
 # %%
+import warnings
 import copy
 import collections
 import numpy as np
@@ -630,7 +631,6 @@ Cinterval = collections.namedtuple('Cinterval', ["low", "high"])
 from scipy.stats import bootstrap
 # parameter inference
 # cols [parameter, reference data, expected value, std, _min, _max, 95% confidence]
-# TODO integrate the smoothed distribution to obtain confidence interval?
 def tabulate_inference(problem, accepted, objectives, simpar=None, extra=False, use_mle=True):
     # print("using maximum likelihood estimate ", use_mle)
     _names = problem["names"]
