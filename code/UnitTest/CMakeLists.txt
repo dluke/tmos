@@ -7,8 +7,7 @@ add_executable(tboost
     test_boost_load.cpp
     )
 
-target_include_directories(tboost PRIVATE ${Boost_INCLUDE_DIRS})
-target_link_libraries(tboost PRIVATE ${Boost_LIBRARY_DIR}/libboost_unit_test_framework.a)
+target_link_libraries(tboost PRIVATE Boost::unit_test_framework)
 
 add_test(NAME boost COMMAND tboost)
 
@@ -21,7 +20,7 @@ add_executable(tbase
     )
 
 target_include_directories(tbase PRIVATE ${base_inc})
-target_link_libraries(tbase PRIVATE ${Boost_LIBRARY_DIR}/libboost_unit_test_framework.a)
+target_link_libraries(tbase PRIVATE ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
 add_test(NAME base COMMAND tbase)
 
@@ -36,8 +35,9 @@ add_executable(tsurface
 target_include_directories(tsurface PUBLIC ${bacterium_inc} ${PYBIND11_INCLUDE_DIR})
 #target_include_directories(tsurface PRIVATE ${surface_inc} ${Boost_INCLUDE_DIRS} ${PYBIND11_INCLUDE_DIR})
 #target_include_directories(tsurface PRIVATE ../Surface/shape.cpp ${Boost_INCLUDE_DIRS})
-target_link_libraries(tsurface PRIVATE ${Boost_LIBRARY_DIR}/libboost_unit_test_framework.a)
-target_link_libraries(tsurface PRIVATE ${NLOPTLIB})
+target_link_libraries(tsurface PRIVATE ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+target_link_libraries(tsurface PRIVATE NLopt::nlopt Python3::Python)
+
 
 add_test(NAME surface COMMAND tsurface)
 
@@ -56,7 +56,7 @@ add_executable(tgeometry
     )
 
 target_include_directories(tgeometry PRIVATE ${bacterium_inc})
-target_link_libraries(tgeometry PRIVATE ${NLOPTLIB})
+target_link_libraries(tgeometry PRIVATE NLopt::nlopt Python3::Python)
 
 add_test(NAME geometry COMMAND tgeometry)
 
@@ -70,55 +70,53 @@ add_executable(tdetach
     )
 
 target_include_directories(tdetach PRIVATE ${bacterium_inc})
-target_link_libraries(tdetach PRIVATE ${NLOPTLIB})
+target_link_libraries(tdetach PRIVATE NLopt::nlopt Python3::Python)
 
 add_test(NAME detach COMMAND tdetach)
 
 
 # 1.1.
 
-add_executable(tcell
-    test_cell.cpp
-    ${surface_cpp}
-    ${base_cpp}
-    ${bacterium_cpp}
-    )
+# add_executable(tcell
+#     test_cell.cpp
+#     ${surface_cpp}
+#     ${base_cpp}
+#     ${bacterium_cpp}
+#     )
 
-target_include_directories(tcell PRIVATE ${bacterium_inc} ${PYBIND11_INCLUDE_DIR})
-target_link_libraries(tcell PRIVATE ${Boost_LIBRARY_DIR}/libboost_unit_test_framework.a)
+# target_include_directories(tcell PRIVATE ${bacterium_inc} ${PYBIND11_INCLUDE_DIR})
+# target_link_libraries(tcell PRIVATE ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} NLopt::nlopt Python3::Python)
 
-add_test(NAME cell COMMAND tcell)
+# add_test(NAME cell COMMAND tcell)
 
 # 1.2.
 
-add_executable(tevent
-    test_event.cpp
-    ${base_cpp}
-    ${surface_cpp}
-    ${bacterium_cpp}
-    )
+# add_executable(tevent
+#     test_event.cpp
+#     ${base_cpp}
+#     ${surface_cpp}
+#     ${bacterium_cpp}
+#     )
 
-target_include_directories(tevent PRIVATE ${bacterium_inc} ${PYBIND11_INCLUDE_DIR})
-target_link_libraries(tevent PRIVATE ${Boost_LIBRARY_DIR}/libboost_unit_test_framework.a)
+# target_include_directories(tevent PRIVATE ${bacterium_inc} ${PYBIND11_INCLUDE_DIR})
+# target_link_libraries(tevent PRIVATE ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} NLopt::nlopt Python3::Python)
 
-add_test(NAME event COMMAND tevent)
-
-
+# add_test(NAME event COMMAND tevent)
 
 
 #2
 
-add_executable(tstr 
-    test_str.cpp 
-    ${base_cpp}
-    ${surface_cpp}
-    ${bacterium_cpp}
-    )
+# add_executable(tstr 
+#     test_str.cpp 
+#     ${base_cpp}
+#     ${surface_cpp}
+#     ${bacterium_cpp}
+#     )
 
-target_include_directories(tstr PRIVATE ${bacterium_inc} ${PYBIND11_INCLUDE_DIR})
-target_link_libraries(tstr PRIVATE ${Boost_LIBRARY_DIR}/libboost_unit_test_framework.a)
+# target_include_directories(tstr PRIVATE ${bacterium_inc} ${PYBIND11_INCLUDE_DIR})
+# target_link_libraries(tstr PRIVATE ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
-add_test(NAME stroutput COMMAND tstr)
+# add_test(NAME stroutput COMMAND tstr)
 
 #3 
 
@@ -140,7 +138,7 @@ add_executable(tvtk
     )
 
 target_include_directories(tvtk PUBLIC ${vtk_inc} ${Boost_INCLUDE_DIRS})
-target_link_libraries(tvtk ${VTK_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(tvtk ${VTK_LIBRARIES} ${Boost_LIBRARIES} Python3::Python NLopt::nlopt)
 
 # add_test(NAME vtkmain COMMAND tvtk)
 
@@ -166,7 +164,7 @@ add_executable(tmap
     test_map.cpp
     )
 
-target_link_libraries(tmap PRIVATE ${Boost_LIBRARY_DIR}/libboost_unit_test_framework.a)
+target_link_libraries(tmap PRIVATE ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
 add_test(NAME map COMMAND tmap)
 

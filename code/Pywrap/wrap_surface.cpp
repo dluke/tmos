@@ -77,12 +77,12 @@ void def_surface(py::module &m) {
     ;
 
 
-  py::class_<HexGrid, std::shared_ptr<HexGrid> > hexgrid(msurface, "HexGrid", hexgrid);
+  py::class_<HexGrid, std::shared_ptr<HexGrid> > hexgrid(msurface, "HexGrid");
   hexgrid
     .def(py::init<double&>())
     .def_readwrite("hrr", &HexGrid::hrr, "")
-    .def_readwrite("hrq", &HexGrid::hrr, "")
-    .def_readwrite("hrz", &HexGrid::hrr, "")
+    .def_readwrite("hrq", &HexGrid::hrq, "")
+    .def_readwrite("hrz", &HexGrid::hrz, "")
     ;
 
   py::class_<Hexc> hexc(msurface, "Hexc");

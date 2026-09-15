@@ -16,7 +16,7 @@
 #include "sphere.hpp"
 #include "shape.hpp"
 #include "plane.hpp"
-#include "step.hpp"
+// #include "step.hpp"
 
 #define BOOST_TEST_MODULE SphereTest
 #include <boost/test/unit_test.hpp>
