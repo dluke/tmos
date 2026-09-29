@@ -137,9 +137,6 @@ void def_pili(py::module &m) {
 
   //
   py::class_<WLCgeneratorBase, std::shared_ptr<WLCgeneratorBase> > wlcbase(mpili, "WLCgeneratorBase");
-  wlcbase
-    .def(py::init<double,double,int>())
-    ;
   py::class_<KPgenerator, std::shared_ptr<KPgenerator> > kpgen(mpili, "KPgenerator", wlcbase);
   kpgen 
     .def(py::init<double,double,int,double>())

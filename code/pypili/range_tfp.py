@@ -15,8 +15,6 @@ import parameters
 import tfputils
 import ctfp3d as tfp
 
-import pili.database.sqldb as sqldb
-
 ############################################################################
 
 class Batch():
@@ -263,110 +261,110 @@ def pretty_allparams(allparams):
 #################################################################################
 
 # Database interface
-def getdirs(path):
-    return sorted( next(os.walk(path))[1] )
+# def getdirs(path):
+#     return sorted( next(os.walk(path))[1] )
 
-def index_of(path):
-    ind = path.split('_')[-1]
-    assert(ind.isdigit())
-    return int(ind)
+# def index_of(path):
+#     ind = path.split('_')[-1]
+#     assert(ind.isdigit())
+#     return int(ind)
 
-class Dynamicpool(object):
-    """
-    construct jobs on the fly. Record their configuration and later their results into the database.
-    """
+# class Dynamicpool(object):
+#     """
+#     construct jobs on the fly. Record their configuration and later their results into the database.
+#     """
 
-    rundir = "/data/dan/run/db"
+#     rundir = "/data/dan/run/db"
 
-    def __init__(self, args, test=True, maxthreads=12, notify=False):
-        self.test = test
-        self.maxthreads = maxthreads
-        self.notify = notify
-        self.args = args
-        #
-        self.parentdir = None
-        self.pending = []
-        self.active = {}
-        self.finished = []
-        #
-        self.localidx = 0
+#     def __init__(self, args, test=True, maxthreads=12, notify=False):
+#         self.test = test
+#         self.maxthreads = maxthreads
+#         self.notify = notify
+#         self.args = args
+#         #
+#         self.parentdir = None
+#         self.pending = []
+#         self.active = {}
+#         self.finished = []
+#         #
+#         self.localidx = 0
 
-    def connect(self):
-        return sqldb.connect(self.test)
+#     def connect(self):
+#         return sqldb.connect(self.test)
 
-    def newparent(self):
-        parentdirs = getdirs(self.rundir)
-        last_index = index_of(parentdirs[-1])
-        parent_form = 'parent_{:012d}'
-        new_parent = parent_form.format(last_index+1)
-        os.mkdir(new_parent)
-        self.parentdir = new_parent
+#     def newparent(self):
+#         parentdirs = getdirs(self.rundir)
+#         last_index = index_of(parentdirs[-1])
+#         parent_form = 'parent_{:012d}'
+#         new_parent = parent_form.format(last_index+1)
+#         os.mkdir(new_parent)
+#         self.parentdir = new_parent
 
-    def get_lastrowid(self):
-        conn = self.connect()
-        sql = "SELECT MAX(ID) FROM simulation"
-        cur = conn.execute(sql)
-        max_id = cur.fetchone()[0]
-        if max_id is None:
-            max_id = 0
-        return max_id
+#     def get_lastrowid(self):
+#         conn = self.connect()
+#         sql = "SELECT MAX(ID) FROM simulation"
+#         cur = conn.execute(sql)
+#         max_id = cur.fetchone()[0]
+#         if max_id is None:
+#             max_id = 0
+#         return max_id
 
-    def newsim(self):
-        assert(self.parentdir != None)
-        form = '{}/simulation_{:012d}'
-        simdir = form.format(self.parentdir, get_lastrowid()+1)
-        if job.batch:
-            for job in job.batch.jobs:
-                job.directory = simdir
-        return simdir
+#     def newsim(self):
+#         assert(self.parentdir != None)
+#         form = '{}/simulation_{:012d}'
+#         simdir = form.format(self.parentdir, get_lastrowid()+1)
+#         if job.batch:
+#             for job in job.batch.jobs:
+#                 job.directory = simdir
+#         return simdir
 
-    def start_next_job(self):
-        if not self.pending:
-            raise RuntimeError("No job to start.")
-        if self.parentdir is None:
-            self.newparent()
-        job = self.pending.pop(0)
+#     def start_next_job(self):
+#         if not self.pending:
+#             raise RuntimeError("No job to start.")
+#         if self.parentdir is None:
+#             self.newparent()
+#         job = self.pending.pop(0)
 
-        if not job.is_batch_started():
-            newsimdir = self.newsim() 
-            job.directory = newsimdir
+#         if not job.is_batch_started():
+#             newsimdir = self.newsim() 
+#             job.directory = newsimdir
 
-        active[job.idx] = job
-        self.insert_sim_config(job)
-        job.setup(self.args)
-        job.assign_process()
+#         active[job.idx] = job
+#         self.insert_sim_config(job)
+#         job.setup(self.args)
+#         job.assign_process()
 
-    def insert_sim_config(job):
-        sqldb.insert_simulation(job)
+#     def insert_sim_config(job):
+#         sqldb.insert_simulation(job)
 
-    def add_pending(self, job):
-        job.idx = self.localidx
-        self.localidx += 1
-        self.pending.append(job)
+#     def add_pending(self, job):
+#         job.idx = self.localidx
+#         self.localidx += 1
+#         self.pending.append(job)
 
-    def update():
-        for job in list(active.values()):
-            if job.p.is_alive() == False:
-                if self.notify:
-                    print(('job {} at directory {} finished.'.format(job.idx, job.directory)))
-                # print notification
-                job = active.pop(job.idx)
-                finished.append(job)
-                # 
-                self._on_finished(job) 
-                #  
-                if job.is_batch_complete():
-                    self._on_batch_finished(job.get_batch_list())
+#     def update():
+#         for job in list(active.values()):
+#             if job.p.is_alive() == False:
+#                 if self.notify:
+#                     print(('job {} at directory {} finished.'.format(job.idx, job.directory)))
+#                 # print notification
+#                 job = active.pop(job.idx)
+#                 finished.append(job)
+#                 # 
+#                 self._on_finished(job) 
+#                 #  
+#                 if job.is_batch_complete():
+#                     self._on_batch_finished(job.get_batch_list())
 
-                if len(self.active) < self.maxthreads and self.pending:
-                    self.start_next_job()
+#                 if len(self.active) < self.maxthreads and self.pending:
+#                     self.start_next_job()
 
-    def _on_finished(self, job):
-        pass
+#     def _on_finished(self, job):
+#         pass
 
-    def _on_batch_finished(self, jobs):
-        """read in the data and compute metrics, etc. """
-        pass
+#     def _on_batch_finished(self, jobs):
+#         """read in the data and compute metrics, etc. """
+#         pass
 
 
 # null classes
@@ -386,11 +384,6 @@ class NoAlgorithm(Algorithm):
         self.version = 0.0
         self.hexsha = None
         self.metric = NoMetric()
-
-
-def test_dyanmic_pool():
-    pool = Dynamicpool(None, test=True)
-    rowid = pool.get_lastrowid()
 
 
 if __name__=='__main__':

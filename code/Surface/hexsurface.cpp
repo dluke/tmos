@@ -230,6 +230,8 @@ vector<Hexc> HexGrid::coordinate_range(Hexc target, int N)
 
 // Get the set of hexes in a polygon
 vector<Hexc> HexGrid::poly(vector<uHexLine> hlines) {
+  // unimplemented
+  return {};
 }
 
 

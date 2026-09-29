@@ -9,11 +9,11 @@ Written by Daniel Barton
 ## Requirements  
 
 ### C++ libraries  
-Python 3.8 (python3-dev package for Python.h)  
+Python 3.11 (python3-dev package for Python.h)  
 Boost 1.67   
 Eigen 3.3+  
 Nlopt (linux: libnlopt-dev package)  
-VTK 7+ (optional)  
+VTK 9+ (optional)  
 
 ### Python analysis  
 Numpy 1.9+  

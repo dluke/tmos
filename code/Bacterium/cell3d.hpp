@@ -162,7 +162,7 @@ class Cell3d: public ACell
   void set_rotation(Vector3d p);
 
   void update_pili();
-  double orthogonalise() { this->body.frame.orthogonalise(); } 
+  double orthogonalise() { return this->body.frame.orthogonalise(); } 
 
   // output utilities
 

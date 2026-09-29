@@ -161,7 +161,7 @@ double Pili::shrink() {
   return leq;
 }
 
-double Pili::_shrink() {
+void Pili::_shrink() {
   // prevent lengths less than inside_length - d_free
   if (leq < min_length) 
   { 

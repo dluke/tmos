@@ -140,7 +140,7 @@ public:
 
   virtual double elongate();
   virtual double shrink();
-  virtual double _shrink();
+  virtual void _shrink();
   virtual double shrink_by(double);
   virtual void switch_se();
   virtual bool has_motor();

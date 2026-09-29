@@ -91,7 +91,7 @@ class Frame
 
   void cross_norm();
   double orthogonalise();
-  double normalise();
+  void normalise();
 
   Matrix3d get_rmatrix();
   Matrix3d get_tmatrix();

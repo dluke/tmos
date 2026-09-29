@@ -321,8 +321,8 @@ def thisread(cfile = 'config.txt', directory = './'):
         args.is_default = True
         return args
 
-from tabulate import tabulate
 def describe(args, target=[]):
+    from tabulate import tabulate
     row = [[args.pget(name) for name in target]]
     if 'anchor_angle_smoothing_fraction' in target: 
         anchor = args.pget('anchor_angle_smoothing_fraction') * np.pi/2

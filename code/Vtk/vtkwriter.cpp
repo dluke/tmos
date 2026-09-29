@@ -178,6 +178,8 @@ int add_pilus_chain(
 // Need to reconstruct the rotational state of the body from the e1 and axis vectors
 int write_pili_vectors(Capsule& body, lsegl ppts, char* fout)
 {
+  // unimplemented
+  return 0;
 }
 
 int write_pili3d(Cell3d& cell, char* fout)

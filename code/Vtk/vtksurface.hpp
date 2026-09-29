@@ -28,7 +28,7 @@
 
 int write_infsteps(InfSteps& step);
 
-int write_hgrid(HexGrid& Hgrid, int range = 5, int res = 20);
+void write_hgrid(HexGrid& Hgrid, int range = 5, int res = 20);
 
 int write_segplane(SegPlane& sp);
 

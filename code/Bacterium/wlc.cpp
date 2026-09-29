@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <exception>
+#include <stdexcept>
 
 using std::cout;
 using std::endl;
@@ -72,6 +73,7 @@ std::unique_ptr<Chain> WLCgenerator::sample(int n, Vector3d axis)
     
     return std::make_unique<Chain>(axis, get_a(), chain_theta, *sample_phi());
   }
+  throw std::invalid_argument("WLCgenerator::sample: n must be >= 1");
 }
 
 std::unique_ptr<Eigen::VectorXd> WLCgenerator::sample_theta(void) {

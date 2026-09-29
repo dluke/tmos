@@ -20,7 +20,6 @@ if 'vtkwriter' in dir(tmos):
 from tmos.base import Vector3d
 
 import numpy as np
-import scipy
 import wrinterval as wr
 
 # needs to be an object not a module
@@ -127,8 +126,8 @@ def get_pili_dtheta(cell):
 # debugging only
 
 # utility for break_fgrad
-from matplotlib import pyplot as plt
 def dumpplot(arr, name):
+    from matplotlib import pyplot as plt
     plt.clf()
     plt.plot(arr, label=name)
     plt.legend()

@@ -6,7 +6,7 @@ project(Pili
 )
 
 
-find_program(CMAKE_CXX_COMPILER NAMES "g++" "gcc" "x86_64-conda_cos6-linux-gnu-c++" "gcc-8")
+# find_program(CMAKE_CXX_COMPILER NAMES "g++" "gcc" "x86_64-conda_cos6-linux-gnu-c++" "gcc-8")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
@@ -23,7 +23,7 @@ endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-narrowing")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-return-type")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-return-type")
 
 # set(USE_VTK false CACHE BOOL "compile with vtk")
 #get_filename_component(PILI_DIR ../ ABSOLUTE CACHE)

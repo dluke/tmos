@@ -81,7 +81,7 @@ double Frame::orthogonalise() {
 // influencing the object state correctly
 // It must act on a copy and not the object itself?
 // Or not set the resulting values
-double Frame::normalise() {
+void Frame::normalise() {
   //std::cout << "CALLING NORMALISE" << std::endl;
   e1 = this->e1.unit();
   e2 = this->e2.unit();

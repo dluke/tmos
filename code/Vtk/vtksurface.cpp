@@ -152,7 +152,7 @@ int write_infsteps(InfSteps& step) {
 //}
 
 
-int write_hgrid(HexGrid& Hgrid, int range, int res)
+void write_hgrid(HexGrid& Hgrid, int range, int res)
 {
 
   // going to append spheres to this append filter

@@ -21,6 +21,8 @@ boost::optional<Vector3d> Polygon::intersects(Lvec& lv)
 
 vector<overlap> Polygon::overlap_vector(Capsule& body) 
 {
+  // unimplemented, Polygon is not currently used at runtime
+  return {};
 }
 
   

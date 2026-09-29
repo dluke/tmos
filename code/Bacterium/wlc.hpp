@@ -35,7 +35,7 @@ class WLCgeneratorBase
   // sample azimuthal angles
   virtual std::unique_ptr<Eigen::VectorXd> sample_phi(void);
   // sample polar angles
-  virtual std::unique_ptr<Eigen::VectorXd> sample_theta(void) {};
+  virtual std::unique_ptr<Eigen::VectorXd> sample_theta(void) = 0;
 
   
   double get_ka() { return ka; }

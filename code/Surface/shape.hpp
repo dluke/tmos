@@ -45,7 +45,7 @@ class Shape
   virtual Vector3d get_origin() {
     return frame.origin;
   }
-  virtual Vector3d set_origin(Vector3d orv) {
+  virtual void set_origin(Vector3d orv) {
     this->frame.origin = orv;
   }
   virtual void set_rotation(Vector3d p) {

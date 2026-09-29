@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # this is the configuration file.
 
-# Just to reiterate that. This IS the configuration file, not part of the code.
-
 # python implementation
 import sys,os
 import itertools
